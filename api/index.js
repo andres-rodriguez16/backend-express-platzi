@@ -8,18 +8,8 @@ const {
   boomErrorHandler,
 } = require('./middleweres/errorHandles');
 const app = express();
-const port = process.env.PORT | 3000;
+const port = process.env.PORT || 3000;
 
-// const whitelist = ['http://localhost:3000'];
-// const options = {
-//   origin: (origin, callback) => {
-//     if (whitelist.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('no permitido'));
-//     }
-//   },
-// };
 app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
