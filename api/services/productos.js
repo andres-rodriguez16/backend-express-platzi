@@ -1,10 +1,14 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const pool = require('../../libs/postgresPool');
+const { Product } = require('../../db/models/productos');
 
 class ProductService {
   constructor() {
     this.product = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.log(err));
   }
   generate() {
     const limit = 100;
@@ -19,7 +23,15 @@ class ProductService {
     }
   }
   async find() {
-    return this.product;
+    // pool
+    // const query = 'SELECT * FROM  task';
+    // const rta = await this.pool.query(query);
+    // return rta.rows;
+
+    // sequelize usando por defectos las queries
+    const query = 'SELECT * FROM  task';
+    const rta = await Product.findAll();
+    return rta;
   }
 
   async findOne(id) {
