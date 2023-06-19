@@ -1,27 +1,28 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
-const pool = require('../../libs/postgresPool');
+// const pool = require('../../libs/postgresPool');
 const { Product } = require('../../db/models/productos');
 
 class ProductService {
   constructor() {
-    this.product = [];
-    this.generate();
-    this.pool = pool;
-    this.pool.on('error', (err) => console.log(err));
+    // con pool
+    // this.product = [];
+    // this.generate();
+    // this.pool = pool;
+    // this.pool.on('error', (err) => console.log(err));
   }
-  generate() {
-    const limit = 100;
-    for (let i = 0; i <= limit; i++) {
-      this.product.push({
-        id: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        price: faker.commerce.price(),
-        image: faker.image.url(),
-        isBlock: faker.datatype.boolean(),
-      });
-    }
-  }
+  // generate() {
+  //   const limit = 100;
+  //   for (let i = 0; i <= limit; i++) {
+  //     this.product.push({
+  //       id: faker.string.uuid(),
+  //       name: faker.commerce.productName(),
+  //       price: faker.commerce.price(),
+  //       image: faker.image.url(),
+  //       isBlock: faker.datatype.boolean(),
+  //     });
+  //   }
+  // }
   async find() {
     // pool
     // const query = 'SELECT * FROM  task';
@@ -29,7 +30,6 @@ class ProductService {
     // return rta.rows;
 
     // sequelize usando por defectos las queries
-    const query = 'SELECT * FROM  task';
     const rta = await Product.findAll();
     return rta;
   }

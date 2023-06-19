@@ -7,7 +7,7 @@ const {
   dbPort,
   dbUser,
   dbPassword,
-} = require('../config.js/config');
+} = require('../config/config');
 
 const USER = encodeURIComponent(dbUser);
 const PASSWORD = encodeURIComponent(dbPassword);
@@ -23,5 +23,5 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize);
 
-sequelize.sync();
+// sequelize.sync();
 module.exports = sequelize;
