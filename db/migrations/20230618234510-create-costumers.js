@@ -11,3 +11,4 @@ module.exports = {
     queryInterface.dropTable(COSTUMERS_TABLET);
   },
 };
+

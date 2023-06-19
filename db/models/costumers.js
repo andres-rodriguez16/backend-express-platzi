@@ -46,7 +46,7 @@ const CostumersSchemas = {
 
 class Costumers extends Model {
   static associate(models) {
-    this.belongsTo(models.User, { associate: 'user', foreignKey:'userId' });
+    this.belongsTo(models.User, { as: 'user', foreignKey:'userId' });
   }
   static config(sequelize) {
     return {

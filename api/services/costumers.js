@@ -1,11 +1,14 @@
 const boom = require('@hapi/boom');
 const { Costumers } = require('../../db/models/costumers');
+const { User } = require('../../db/models/users');
 
 class CostumerService {
   constructor() {}
 
   async find() {
-    const costumer = await Costumers.findAll();
+    const costumer = await Costumers.findAll({
+      include: ['user'],
+    });
     return costumer;
   }
   async findOne(id) {
@@ -18,7 +21,9 @@ class CostumerService {
     } else return user;
   }
   async create(date) {
-    const newCostumer = Costumers.create(date);
+    const newCostumer = await Costumers.create(date, {
+      include : ['user']
+    });
     return newCostumer;
   }
 

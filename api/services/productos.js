@@ -35,7 +35,7 @@ class ProductService {
   }
 
   async findOne(id) {
-    let productFinded = this.product.find((product) => product.id === id);
+    let productFinded = Product.findByPk(id);
     if (!productFinded) {
       throw boom.notFound('producto no encontrado');
     }
@@ -44,37 +44,35 @@ class ProductService {
     }
     return productFinded;
   }
+
   async create(product) {
-    const productCreate = {
-      id: faker.string.uuid(),
-      ...product,
-    };
-    this.product.push(productCreate);
-    return productCreate;
+    const newProduct = await Product.create(product);
+    return newProduct;
   }
 
   async update(id, changes) {
-    const indexProduct = this.product.findIndex((product) => product.id === id);
-    if (indexProduct === -1) {
+    const Product = await Product.findByPk(id);
+    if (!Product) {
       throw boom.notFound('producto no encontrado');
     } else {
-      const product = this.product[indexProduct];
-
-      this.product[indexProduct] = {
-        ...product,
-        ...changes,
+      await Product.update(changes);
+      return {
+        id,
+        changes,
       };
-      return this.product[indexProduct];
     }
   }
 
   async delete(id) {
-    const indexProduct = this.product.findIndex((product) => product.id === id);
-    if (indexProduct === -1) {
+    const Product = await Product.findByPk(id);
+    if (!Product) {
       throw boom.notFound('producto no encontrado');
     } else {
-      this.product.splice(indexProduct, 1);
-      return { id };
+      await Product.destroy();
+      return {
+        id,
+        message: 'producto eliminado',
+      };
     }
   }
 }

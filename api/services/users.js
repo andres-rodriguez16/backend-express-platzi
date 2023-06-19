@@ -18,7 +18,9 @@ class UserService {
     // return rta.rows;
 
     // sequelize
-    const user = await User.findAll();
+    const user = await User.findAll({
+      include: ['customer']
+    });
     return user;
   }
 
