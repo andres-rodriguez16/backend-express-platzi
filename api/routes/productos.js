@@ -5,15 +5,27 @@ const {
   updateProductSchemas,
   createProductSchemas,
   getProductSchemas,
+  queryProductSchemas,
 } = require('../schemas/productos');
 
 const validatorHandles = require('../middleweres/validatorHandles');
 const services = new ProductService();
 
-routes.get('/', async (req, res) => {
-  const productos = await services.find();
-  res.status(200).json(productos);
-});
+routes.get(
+  '/',
+  validatorHandles(queryProductSchemas, 'query'),
+  async (req, res) => {
+    const { limit, offset, price, minPrice, maxPrice } = req.query;
+    const productos = await services.find(
+      limit,
+      offset,
+      price,
+      minPrice,
+      maxPrice
+    );
+    res.status(200).json(productos);
+  }
+);
 
 routes.get(
   '/:id',

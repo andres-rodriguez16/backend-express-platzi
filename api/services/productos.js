@@ -1,5 +1,6 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const { Op } = require('sequelize');
 // const pool = require('../../libs/postgresPool');
 const { Product } = require('../../db/models/productos');
 
@@ -23,19 +24,37 @@ class ProductService {
   //     });
   //   }
   // }
-  async find() {
+  async find(limit, offset, price, minPrice, maxPrice) {
     // pool
     // const query = 'SELECT * FROM  task';
     // const rta = await this.pool.query(query);
     // return rta.rows;
 
     // sequelize usando por defectos las queries
-    const rta = await Product.findAll();
+    const options = {
+      include: ['category'],
+      where: {},
+    };
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+    if (price) {
+      options.where.price = price;
+    }
+    if (maxPrice && minPrice) {
+      options.where.price = {
+        [Op.gte]: minPrice,
+        [Op.lte]: maxPrice,
+      };
+    }
+    const rta = await Product.findAll(options);
     return rta;
   }
 
   async findOne(id) {
-    let productFinded = Product.findByPk(id);
+    let productFinded = await Product.findByPk(id);
+    console.log(productFinded, 'productFinded');
     if (!productFinded) {
       throw boom.notFound('producto no encontrado');
     }

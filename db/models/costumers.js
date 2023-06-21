@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 
-const COSTUMERS_TABLET = 'costumers';
+const CUSTOMERS_TABLET = 'customer';
 const { USER_TABLET } = require('./users');
 
-const CostumersSchemas = {
+const CustomerSchemas = {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -44,17 +44,21 @@ const CostumersSchemas = {
   }
 };
 
-class Costumers extends Model {
+class Customer extends Model {
   static associate(models) {
     this.belongsTo(models.User, { as: 'user', foreignKey:'userId' });
+    this.hasMany(models.Order, {
+      as : 'order',
+      foreignKey : 'customerId'
+    })
   }
   static config(sequelize) {
     return {
       sequelize,
-      tableName: COSTUMERS_TABLET,
-      modelName: 'Costumers',
+      tableName: CUSTOMERS_TABLET,
+      modelName: 'Customer',
       timestamps: false,
     };
   }
 }
-module.exports = { COSTUMERS_TABLET, Costumers, CostumersSchemas };
+module.exports = { CUSTOMERS_TABLET, Customer, CustomerSchemas };

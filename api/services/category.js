@@ -12,17 +12,14 @@ class UserService {
   }
 
   async find() {
-    const category = await Category
-      .findAll
-      // {
-      //   include: ['customer'],
-      // }
-      ();
+    const category = await Category.findAll();
     return category;
   }
 
   async findOne(id) {
-    const category = await Category.findByPk(id);
+    const category = await Category.findByPk(id, {
+      include: ['products'],
+    });
     if (!category) {
       throw boom.notFound(
         'category not found',

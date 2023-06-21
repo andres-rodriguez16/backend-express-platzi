@@ -1,14 +1,13 @@
 'use strict';
-const { COSTUMERS_TABLET, CostumersSchemas } = require('../models/costumers');
+const { CUSTOMERS_TABLET, CustomerSchemas } = require('../models/costumers');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    queryInterface.createTable(COSTUMERS_TABLET, CostumersSchemas);
+    await queryInterface.createTable(CUSTOMERS_TABLET, CustomerSchemas);
   },
 
   async down(queryInterface, Sequelize) {
-    queryInterface.dropTable(COSTUMERS_TABLET);
+    await queryInterface.dropTable(CUSTOMERS_TABLET);
   },
 };
-

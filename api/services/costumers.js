@@ -1,18 +1,16 @@
 const boom = require('@hapi/boom');
-const { Costumers } = require('../../db/models/costumers');
-const { User } = require('../../db/models/users');
+const { Customer } = require('../../db/models/costumers');
 
 class CostumerService {
-  constructor() {}
-
+  constructCustomer
   async find() {
-    const costumer = await Costumers.findAll({
-      include: ['user'],
+    const costumer = await Customer.findAll({
+      include: ['user', 'order'],
     });
     return costumer;
   }
   async findOne(id) {
-    const costumer = await Costumers.findByPk(id);
+    const costumer = await Customer.findByPk(id);
     if (!costumer) {
       throw boom.notFound(
         'Costumer not found',
@@ -21,14 +19,14 @@ class CostumerService {
     } else return user;
   }
   async create(date) {
-    const newCostumer = await Costumers.create(date, {
+    const newCostumer = await Customer.create(date, {
       include : ['user']
     });
     return newCostumer;
   }
 
   async update(id, changes) {
-    const costumer = await Costumers.findOne({
+    const costumer = await Customer.findOne({
       where: {
         id: id,
       },
@@ -46,7 +44,7 @@ class CostumerService {
       );
   }
   async delete(id) {
-    const costumer = await Costumers.findByPk(id);
+    const costumer = await CCustomer.findByPk(id);
     if (id) {
       await costumer.destroy();
       return { message: 'Costumer deleted' };
