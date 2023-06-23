@@ -1,8 +1,9 @@
 const boom = require('@hapi/boom');
 const { Customer } = require('../../db/models/costumers');
+const bcrypt = require('bcrypt');
 
 class CostumerService {
-  constructCustomer
+  constructCustomer;
   async find() {
     const costumer = await Customer.findAll({
       include: ['user', 'order'],
@@ -19,9 +20,18 @@ class CostumerService {
     } else return user;
   }
   async create(date) {
-    const newCostumer = await Customer.create(date, {
-      include : ['user']
+    const hash = await bcrypt.hash(date.user.password, 10);
+    const newDate = {
+      ...date,
+      user: {
+        ...date.user,
+        password: hash,
+      },
+    };
+    const newCostumer = await Customer.create(newDate, {
+      include: ['user'],
     });
+    delete newCostumer.user.dataValues.password;;
     return newCostumer;
   }
 

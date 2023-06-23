@@ -1,13 +1,25 @@
 const boom = require('@hapi/boom');
 const { models } = require('../../libs/sequelize');
 const { User } = require('../../db/models/users');
+const bcrypt = require('bcrypt');
 // const pool = require('../../libs/postgresPool');
-
 class UserService {
   constructor() {}
 
   async create(data) {
-    const newUser = await User.create(data);
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await User.create({
+      ...data,
+      password: hash,
+    });
+    // const { createdAt, id, email, role } = newUser;
+    // return {
+    //   createdAt,
+    //   id,
+    //   email,
+    //   role,
+    // };
+    delete newUser.password;
     return newUser;
   }
 
@@ -19,7 +31,7 @@ class UserService {
 
     // sequelize
     const user = await User.findAll({
-      include: ['customer']
+      include: ['customer'],
     });
     return user;
   }
@@ -34,6 +46,14 @@ class UserService {
     } else return user;
   }
 
+  async findByPk(email) {
+    const user = await User.findOne({
+      where: {
+        email
+      },
+    });
+    return user;
+  }
   async update(id, changes) {
     const user = await User.findOne({
       where: {

@@ -12,7 +12,7 @@ const validatorHandles = require('../middleweres/validatorHandles');
 const services = new ProductService();
 
 routes.get(
-  '/',
+  '/filter',
   validatorHandles(queryProductSchemas, 'query'),
   async (req, res) => {
     const { limit, offset, price, minPrice, maxPrice } = req.query;
@@ -26,6 +26,11 @@ routes.get(
     res.status(200).json(productos);
   }
 );
+
+routes.get('/', async (req, res) => {
+  const productos = await services.find();
+  res.status(200).json(productos);
+});
 
 routes.get(
   '/:id',
