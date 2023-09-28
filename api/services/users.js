@@ -49,7 +49,7 @@ class UserService {
   async findByPk(email) {
     const user = await User.findOne({
       where: {
-        email
+        email,
       },
     });
     return user;
@@ -62,16 +62,6 @@ class UserService {
     });
     if (user) {
       user.update(changes);
-      // const user = await User.update(
-      //   {
-      //     ...changes,
-      //   },
-      //   {
-      //     where: {
-      //       id: Number(id),
-      //     },
-      //   }
-      // );
       return {
         id,
         changes,

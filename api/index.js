@@ -10,7 +10,6 @@ const {
   boomErrorHandler,
   ormErrorHandler,
 } = require('./middleweres/errorHandles');
-const checkApiKeys = require('./middleweres/authHandler');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -21,9 +20,9 @@ app.use(express.json());
 app.use(morgan('tiny'));
 routerApi(app);
 
-app.get('/', checkApiKeys, (req, res) => {
-  res.send('hello world');
-});
+// app.get('/', checkApiKeys, (req, res) => {
+//   res.send('hello world');
+// });
 app.use(logErrors);
 app.use(ormErrorHandler);
 app.use(boomErrorHandler);

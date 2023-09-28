@@ -10,5 +10,7 @@ const config = {
   dbName: process.env.DB_NAME,
   apiKey: process.env.API_key,
   jsonSecret: process.env.JSON_SECRET,
+  nodemailEmail: process.env.email,
+  nodemailPass: process.env.pass,
 };
 module.exports = config;

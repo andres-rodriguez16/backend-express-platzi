@@ -18,6 +18,11 @@ const UsersSchemas = {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  recoveyToken: {
+    field: 'recovey_token',
+    allowNull: true,
+    type: DataTypes.STRING,
+  },
   role: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -37,7 +42,7 @@ class User extends Model {
   static associate(models) {
     this.hasOne(models.Customer, {
       as: 'customer',
-      foreignKey: 'userId'
+      foreignKey: 'userId',
     });
   }
   static config(sequelize) {

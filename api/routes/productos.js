@@ -1,6 +1,8 @@
 const express = require('express');
 const routes = express.Router();
 const ProductService = require('../services/productos');
+const Passport = require('passport');
+
 const {
   updateProductSchemas,
   createProductSchemas,
@@ -65,6 +67,7 @@ routes.get('/filter', (req, res) => {
 
 routes.post(
   '/',
+  Passport.authenticate('jwt', { session: false }),
   validatorHandles(createProductSchemas, 'body'),
   async (req, res) => {
     const body = req.body;
@@ -78,6 +81,7 @@ routes.post(
 
 routes.patch(
   '/:id',
+  Passport.authenticate('jwt', { session: false }),
   validatorHandles(getProductSchemas, 'params'),
   validatorHandles(updateProductSchemas, 'body'),
   async (req, res, next) => {
@@ -98,17 +102,21 @@ routes.patch(
   }
 );
 
-routes.delete('/:id', validatorHandles(), async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const deletedProduct = await services.delete(id);
-    res.send({
-      message: 'Deleted',
-      data: deletedProduct,
-    });
-  } catch (error) {
-    next(error);
+routes.delete(
+  '/:id',
+  Passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const deletedProduct = await services.delete(id);
+      res.send({
+        message: 'Deleted',
+        data: deletedProduct,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 module.exports = routes;

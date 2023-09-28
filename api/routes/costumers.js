@@ -2,10 +2,9 @@ const express = require('express');
 const routes = express.Router();
 const CostumerService = require('../services/costumers');
 const validatorHandler = require('../middleweres/validatorHandles');
-const boom = require('@hapi/boom');
+const Passport = require('passport');
+
 const {
-  updateCostumerSchemas,
-  getCostumerSchemas,
   createCostumerSchemas,
 } = require('../schemas/costumers');
 
@@ -21,7 +20,7 @@ routes.get('/', async (req, res, next) => {
 });
 
 routes.post(
-  '/',
+  '/',  Passport.authenticate('jwt', { session: false }),
   validatorHandler(createCostumerSchemas, 'body'),
   async (req, res, next) => {
     try {
